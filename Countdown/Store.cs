@@ -7,5 +7,12 @@ namespace Countdown
 {
     public class Store
     {
+        public void AddItem(string barcode, string name, int price)
+        {
+        }
+        public int ItemCount()
+        {
+            return 1;
+        }
     }
 }
