@@ -5,29 +5,30 @@ using System.Web;
 
 namespace Countdown
 {
+    public struct Product
+    {
+        public string barcode;
+        public string name;
+        public int price;
+    }
+
     public class Store
     {
-        private List<string> barcodes;
-        private List<string> names;
-        private List<int> prices;
+        private List<Product> products;
 
         public Store()
         {
-            barcodes = new List<string>();
-            names = new List<string>();
-            prices = new List<int>();
+            products = new List<Product>();
         }
 
         public void AddItem(string barcode, string name, int price)
         {
-            barcodes.Add(barcode);
-            names.Add(name);
-            prices.Add(price);
+            products.Add(new Product() { barcode = barcode, name = name, price = price });
         }
 
         public int ItemCount()
         {
-            return barcodes.Count();
+            return products.Count();
         }
 
         public int CalculateCost(string[] barcodes)
@@ -35,9 +36,8 @@ namespace Countdown
             int total = 0;
             foreach (string barcode in barcodes)
             {
-                int index = Array.IndexOf(barcodes, barcode);
-                int price = prices.ElementAt(index);
-                total += price;
+                Product p = products.Find(x => x.barcode == barcode);
+                total += p.price;
             }
             return total;
         }
@@ -47,10 +47,8 @@ namespace Countdown
             string receipt = "";
             foreach (string barcode in barcodes)
             {
-                int index = Array.IndexOf(barcodes, barcode);
-                string name = names.ElementAt(index);
-                int price = prices.ElementAt(index);
-                receipt += String.Format("{0} ${1}{2}", name, price, Environment.NewLine);
+                Product p = products.Find(x => x.barcode == barcode);
+                receipt += String.Format("{0} ${1}{2}", p.name, p.price, Environment.NewLine);
             }
             receipt += String.Format("total ${0}", CalculateCost(barcodes));
             return receipt;
