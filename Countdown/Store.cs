@@ -33,24 +33,37 @@ namespace Countdown
 
         public int CalculateCost(string[] barcodes)
         {
-            return barcodes.Aggregate(0, (sum, barcode) => sum + GetProduct(barcode).price);
+            return GetProducts(barcodes).Select(b => b.price).Sum();
         }
 
         public string PrintReceipt(string[] barcodes)
         {
-            string receipt = "";
-            foreach (string barcode in barcodes)
-            {
-                Product p = products.Find(x => x.barcode == barcode);
-                receipt += String.Format("{0} ${1}{2}", p.name, p.price, Environment.NewLine);
-            }
-            receipt += String.Format("total ${0}", CalculateCost(barcodes));
-            return receipt;
+            return PrintEach(barcodes) + PrintTotal(barcodes);
+        }
+
+        private Product[] GetProducts(string[] barcodes)
+        {
+            return barcodes.Select(b => GetProduct(b)).ToArray();
         }
 
         private Product GetProduct(string barcode)
         {
             return products.Find(x => x.barcode == barcode);
+        }
+
+        private string PrintEach(string[] barcodes)
+        {
+            return GetProducts(barcodes).Aggregate("", (str, p) => str + PrintItem(p));
+        }
+
+        private string PrintItem(Product p)
+        {
+            return String.Format("{0} ${1}{2}", p.name, p.price, Environment.NewLine);
+        }
+
+        private string PrintTotal(string[] barcodes)
+        {
+            return String.Format("total ${0}", CalculateCost(barcodes));
         }
     }
 }
