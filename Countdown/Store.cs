@@ -33,13 +33,7 @@ namespace Countdown
 
         public int CalculateCost(string[] barcodes)
         {
-            int total = 0;
-            foreach (string barcode in barcodes)
-            {
-                Product p = products.Find(x => x.barcode == barcode);
-                total += p.price;
-            }
-            return total;
+            return barcodes.Aggregate(0, (sum, barcode) => sum + GetProduct(barcode).price);
         }
 
         public string PrintReceipt(string[] barcodes)
@@ -52,6 +46,11 @@ namespace Countdown
             }
             receipt += String.Format("total ${0}", CalculateCost(barcodes));
             return receipt;
+        }
+
+        private Product GetProduct(string barcode)
+        {
+            return products.Find(x => x.barcode == barcode);
         }
     }
 }
