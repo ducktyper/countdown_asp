@@ -6,38 +6,31 @@ namespace Countdown.Tests
     [TestClass]
     public class StoreTest
     {
-        [TestMethod]
-        public void TestAddItem()
+        Store store;
+
+        [TestInitialize]
+        public void InitStoreHavingTwoItems()
         {
-            Store store = new Store();
-            store.AddItem("0001", "apple", 10);
-            Assert.AreEqual(1, store.ItemCount());
+            store = new Store();
+            store.AddItem("0001", "apple", 5);
+            store.AddItem("0002", "orange", 10);
         }
 
         [TestMethod]
-        public void TestAddItemInceasesItemCount()
+        public void TestAddItem()
         {
-            Store store = new Store();
-            store.AddItem("0001", "apple", 10);
-            store.AddItem("0002", "orange", 10);
             Assert.AreEqual(2, store.ItemCount());
         }
 
         [TestMethod]
         public void TestCalculateCost()
         {
-            Store store = new Store();
-            store.AddItem("0001", "apple", 5);
-            store.AddItem("0002", "orange", 10);
             Assert.AreEqual(15, store.CalculateCost(new string[] {"0001", "0002"}));
         }
 
         [TestMethod]
         public void TestPrintReceipt()
         {
-            Store store = new Store();
-            store.AddItem("0001", "apple", 5);
-            store.AddItem("0002", "orange", 10);
             string expected = String.Format("apple $5{0}orange $10{0}total $15", Environment.NewLine);
             Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001", "0002"}));
         }
