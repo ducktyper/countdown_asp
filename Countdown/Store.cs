@@ -50,7 +50,7 @@ namespace Countdown
                 int index = Array.IndexOf(barcodes, barcode);
                 string name = names.ElementAt(index);
                 int price = prices.ElementAt(index);
-                receipt += String.Format("{0} ${1}\n", name, price);
+                receipt += String.Format("{0} ${1}{2}", name, price, Environment.NewLine);
             }
             receipt += String.Format("total ${0}", CalculateCost(barcodes));
             return receipt;

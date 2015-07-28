@@ -38,7 +38,7 @@ namespace Countdown.Tests
             Store store = new Store();
             store.AddItem("0001", "apple", 5);
             store.AddItem("0002", "orange", 10);
-            string expected = "apple $5\norange $10\ntotal $15";
+            string expected = String.Format("apple $5{0}orange $10{0}total $15", Environment.NewLine);
             Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001", "0002"}));
         }
     }
