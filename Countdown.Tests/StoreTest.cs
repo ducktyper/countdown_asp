@@ -31,5 +31,15 @@ namespace Countdown.Tests
             store.AddItem("0002", "orange", 10);
             Assert.AreEqual(15, store.CalculateCost(new string[] {"0001", "0002"}));
         }
+
+        [TestMethod]
+        public void TestPrintReceipt()
+        {
+            Store store = new Store();
+            store.AddItem("0001", "apple", 5);
+            store.AddItem("0002", "orange", 10);
+            string expected = "apple $5\norange $10\ntotal $15";
+            Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001", "0002"}));
+        }
     }
 }
