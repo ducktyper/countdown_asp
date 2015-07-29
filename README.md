@@ -3,6 +3,38 @@ Goal: Learn C# and ASP.NET MVC
 
 We will build a self-checkout machine used in a supermarket together.
 
+### Task 2
+
+#### TODO
+Implement new requirements to store.rb and store_test.rb. Reading Ruby syntax will be useful to do this task.
+#### Requirements
+* Receipts show costs including cents (example: apple $5.00)
+
+* Customers can purchase products which returns the receipt
+```csharp
+store.Purchase(new string[] {"0001", "0002"}) //=>
+apple $5.00
+orange $10.00
+total $15.00
+```
+* Owner can view purchase summary as data array
+```csharp
+store.PurchaseSummary() //=>
+[
+  ["Time","Number of Products","Cost"],
+  ["17/07/2015","2","20.00"],
+  ["18/07/2015","1","15.99"]
+]
+```
+* Owner can add discount to a product
+```csharp
+store.AddDiscount("0001", 1) //=> $1 discount to product "0001"
+```
+* Owner can delete discount to a product
+```csharp
+store.DeleteDiscount("0001") //=> delete discount to product "0001"
+```
+
 ### Task 1
 
 #### TODO
