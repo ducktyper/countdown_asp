@@ -9,7 +9,7 @@ namespace Countdown
     {
         public string barcode;
         public string name;
-        public int price;
+        public float price;
     }
 
     public class Store
@@ -21,7 +21,7 @@ namespace Countdown
             products = new List<Product>();
         }
 
-        public void AddItem(string barcode, string name, int price)
+        public void AddItem(string barcode, string name, float price)
         {
             products.Add(new Product() { barcode = barcode, name = name, price = price });
         }
@@ -31,7 +31,7 @@ namespace Countdown
             return products.Count();
         }
 
-        public int CalculateCost(string[] barcodes)
+        public float CalculateCost(string[] barcodes)
         {
             return GetProducts(barcodes).Select(b => b.price).Sum();
         }
@@ -58,12 +58,12 @@ namespace Countdown
 
         private string PrintItem(Product p)
         {
-            return String.Format("{0} ${1}{2}", p.name, p.price, Environment.NewLine);
+            return String.Format("{0} ${1:n2}{2}", p.name, p.price, Environment.NewLine);
         }
 
         private string PrintTotal(string[] barcodes)
         {
-            return String.Format("total ${0}", CalculateCost(barcodes));
+            return String.Format("total ${0:n2}", CalculateCost(barcodes));
         }
     }
 }

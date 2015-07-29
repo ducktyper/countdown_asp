@@ -31,7 +31,7 @@ namespace Countdown.Tests
         [TestMethod]
         public void TestPrintReceipt()
         {
-            string expected = String.Format("apple $5{0}orange $10{0}total $15", Environment.NewLine);
+            string expected = String.Format("apple $5.00{0}orange $10.00{0}total $15.00", Environment.NewLine);
             Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001", "0002"}));
         }
     }
