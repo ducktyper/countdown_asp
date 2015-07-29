@@ -41,6 +41,11 @@ namespace Countdown
             return PrintEach(barcodes) + PrintTotal(barcodes);
         }
 
+        public string Purchase(string[] barcodes)
+        {
+            return PrintReceipt(barcodes);
+        }
+
         private Product[] GetProducts(string[] barcodes)
         {
             return barcodes.Select(b => GetProduct(b)).ToArray();
