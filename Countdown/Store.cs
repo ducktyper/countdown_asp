@@ -26,8 +26,8 @@ namespace Countdown
 
     public class Discount
     {
-        public Product Product {get; set;}
-        public float Amount {get; set;}
+        public Product Product { get; set; }
+        public float Amount { get; set; }
 
         public Discount(Product product, float amount)
         {
@@ -44,7 +44,7 @@ namespace Countdown
     {
         public Product[] products;
         public Discount[] discounts;
-        public DateTime Purchased_at {get; private set;}
+        public DateTime Purchased_at { get; private set; }
 
         public Purchase(Product[] _products, Discount[] _discounts)
         {
