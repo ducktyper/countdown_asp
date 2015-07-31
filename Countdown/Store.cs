@@ -39,13 +39,28 @@ namespace Countdown
 
     public class SummaryBuilder
     {
-        public ArrayList summary {get; private set;}
-        public SummaryBuilder()
+        private ArrayList summary;
+        private List<Purchase> purchases;
+        public SummaryBuilder(List<Purchase> _purchases)
         {
             summary = new ArrayList();
-            AddHeaders();
+            purchases = _purchases;
         }
-        public void Add(string time, int count,  float cost)
+        public ArrayList Generate()
+        {
+            AddHeaders();
+            AddPurchases();
+            return summary;
+        }
+        private void AddPurchases()
+        {
+            purchases.ForEach(p => AddPurchase(p));
+        }
+        private void AddPurchase(Purchase p)
+        {
+            AddData(p.DisplayTime(), p.ProductCount(), p.Cost());
+        }
+        private void AddData(string time, int count,  float cost)
         {
             summary.Add(new string[] {time, count.ToString(), cost.ToString()});
         }
@@ -88,10 +103,7 @@ namespace Countdown
         }
         public ArrayList PurchaseSummary()
         {
-            var builder = new SummaryBuilder();
-            foreach (Purchase p in purchases)
-                builder.Add(p.DisplayTime(), p.ProductCount(), p.Cost());
-            return builder.summary;
+            return new SummaryBuilder(purchases).Generate();
         }
         private Product[] GetProducts(string[] barcodes)
         {
