@@ -137,7 +137,7 @@ namespace Countdown
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {
-            return barcodes.Select(x => GetDiscount(x)).Where(x => x.amount != 0).ToArray();
+            return barcodes.Select(x => GetDiscount(x)).Where(x => x.barcode != null).ToArray();
         }
         private Discount GetDiscount(string barcode)
         {
