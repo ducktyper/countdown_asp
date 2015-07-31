@@ -15,17 +15,17 @@ namespace Countdown
 
     public class Purchase
     {
-        public Product[] products {get; private set;}
-        public DateTime purchased_at {get; private set;}
+        public Product[] products;
+        public DateTime Purchased_at {get; private set;}
 
         public Purchase(Product[] _products)
         {
             products     = _products;
-            purchased_at = DateTime.Now;
+            Purchased_at = DateTime.Now;
         }
         public string DisplayTime()
         {
-            return String.Format("{0:MM dd YYYY}", purchased_at);
+            return String.Format("{0:MM dd YYYY}", Purchased_at);
         }
         public int ProductCount()
         {
