@@ -13,10 +13,20 @@ namespace Countdown
         public float price;
     }
 
-    public struct Discount
+    public class Discount
     {
-        public Product product;
-        public float amount;
+        public Product Product {get; set;}
+        public float Amount {get; set;}
+
+        public Discount(Product product, float amount)
+        {
+            Product = product;
+            Amount = amount;
+        }
+        public string Print()
+        {
+            return String.Format("{0} -${1:n2}{2}", Product.name, Amount, Environment.NewLine);
+        }
     }
 
     public class Purchase
@@ -41,7 +51,7 @@ namespace Countdown
         }
         public float Cost()
         {
-            return products.Select(b => b.price).Sum() - discounts.Select(d => d.amount).Sum();
+            return products.Select(b => b.price).Sum() - discounts.Select(d => d.Amount).Sum();
         }
         public string PrintReceipt()
         {
@@ -54,12 +64,7 @@ namespace Countdown
         }
         private string PrintDiscounts()
         {
-            return discounts.Aggregate("", (str, d) => str + PrintDiscount(d));
-        }
-        private string PrintDiscount(Discount d)
-        {
-            Product p = d.product;
-            return String.Format("{0} -${1:n2}{2}", p.name, d.amount, Environment.NewLine);
+            return discounts.Aggregate("", (str, d) => str + d.Print());
         }
         private string PrintItem(Product p)
         {
@@ -145,7 +150,7 @@ namespace Countdown
         }
         public void AddDiscount(string barcode, float amount)
         {
-            discounts.Add(new Discount() { product = GetProduct(barcode), amount = amount });
+            discounts.Add(new Discount(GetProduct(barcode), amount));
         }
         public void DeleteDiscount(string barcode)
         {
@@ -162,11 +167,11 @@ namespace Countdown
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {
-            return barcodes.Select(x => GetDiscount(x)).Where(x => x.product.barcode != null).ToArray();
+            return barcodes.Select(x => GetDiscount(x)).Where(x => x != null).ToArray();
         }
         private Discount GetDiscount(string barcode)
         {
-            return discounts.Find(x => x.product.barcode == barcode);
+            return discounts.Find(x => x.Product.barcode == barcode);
         }
     }
 }
