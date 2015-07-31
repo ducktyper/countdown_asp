@@ -6,11 +6,22 @@ using System.Web;
 
 namespace Countdown
 {
-    public struct Product
+    public class Product
     {
-        public string barcode;
-        public string name;
-        public float price;
+        public string Barcode { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
+
+        public Product(string barcode, string name, float price)
+        {
+            Barcode = barcode;
+            Name    = name;
+            Price   = price;
+        }
+        public string Print()
+        {
+            return String.Format("{0} ${1:n2}{2}", Name, Price, Environment.NewLine);
+        }
     }
 
     public class Discount
@@ -25,7 +36,7 @@ namespace Countdown
         }
         public string Print()
         {
-            return String.Format("{0} -${1:n2}{2}", Product.name, Amount, Environment.NewLine);
+            return String.Format("{0} -${1:n2}{2}", Product.Name, Amount, Environment.NewLine);
         }
     }
 
@@ -51,7 +62,7 @@ namespace Countdown
         }
         public float Cost()
         {
-            return products.Select(b => b.price).Sum() - discounts.Select(d => d.Amount).Sum();
+            return products.Select(b => b.Price).Sum() - discounts.Select(d => d.Amount).Sum();
         }
         public string PrintReceipt()
         {
@@ -60,15 +71,11 @@ namespace Countdown
 
         private string PrintEach()
         {
-            return products.Aggregate("", (str, p) => str + PrintItem(p));
+            return products.Aggregate("", (str, p) => str + p.Print());
         }
         private string PrintDiscounts()
         {
             return discounts.Aggregate("", (str, d) => str + d.Print());
-        }
-        private string PrintItem(Product p)
-        {
-            return String.Format("{0} ${1:n2}{2}", p.name, p.price, Environment.NewLine);
         }
         private string PrintTotal()
         {
@@ -125,7 +132,7 @@ namespace Countdown
         }
         public void AddItem(string barcode, string name, float price)
         {
-            products.Add(new Product() { barcode = barcode, name = name, price = price });
+            products.Add(new Product(barcode, name,  price));
         }
         public int ItemCount()
         {
@@ -163,7 +170,7 @@ namespace Countdown
         }
         private Product GetProduct(string barcode)
         {
-            return products.Find(x => x.barcode == barcode);
+            return products.Find(x => x.Barcode == barcode);
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {
@@ -171,7 +178,7 @@ namespace Countdown
         }
         private Discount GetDiscount(string barcode)
         {
-            return discounts.Find(x => x.Product.barcode == barcode);
+            return discounts.Find(x => x.Product.Barcode == barcode);
         }
     }
 }
