@@ -122,6 +122,10 @@ namespace Countdown
         {
             discounts.Add(new Discount() { barcode = barcode, amount = amount });
         }
+        public void DeleteDiscount(string barcode)
+        {
+            discounts.Remove(GetDiscount(barcode));
+        }
 
         private Product[] GetProducts(string[] barcodes)
         {

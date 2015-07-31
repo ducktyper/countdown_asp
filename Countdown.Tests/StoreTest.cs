@@ -60,5 +60,14 @@ namespace Countdown.Tests
             string expected = String.Format("apple $5.00{0}apple -$1.00{0}total $4.00", Environment.NewLine);
             Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001"}));
         }
+
+        [TestMethod]
+        public void TestDeleteDiscount()
+        {
+            store.AddDiscount("0001", 1);
+            store.DeleteDiscount("0001");
+            string expected = String.Format("apple $5.00{0}total $5.00", Environment.NewLine);
+            Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001"}));
+        }
     }
 }
