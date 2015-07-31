@@ -13,14 +13,22 @@ namespace Countdown
         public float price;
     }
 
+    public struct Discount
+    {
+        public string barcode;
+        public float amount;
+    }
+
     public class Purchase
     {
         public Product[] products;
+        public Discount[] discounts;
         public DateTime Purchased_at {get; private set;}
 
-        public Purchase(Product[] _products)
+        public Purchase(Product[] _products, Discount[] _discounts)
         {
             products     = _products;
+            discounts    = _discounts;
             Purchased_at = DateTime.Now;
         }
         public string DisplayTime()
@@ -76,11 +84,13 @@ namespace Countdown
     {
         private List<Product> products;
         private List<Purchase> purchases;
+        private List<Discount> discounts;
 
         public Store()
         {
             products  = new List<Product>();
             purchases = new List<Purchase>();
+            discounts = new List<Discount>();
         }
         public void AddItem(string barcode, string name, float price)
         {
@@ -92,20 +102,25 @@ namespace Countdown
         }
         public float CalculateCost(string[] barcodes)
         {
-            return GetProducts(barcodes).Select(b => b.price).Sum();
+            return GetProducts(barcodes).Select(b => b.price).Sum() -
+                GetDiscounts(barcodes).Select(d => d.amount).Sum();
         }
         public string PrintReceipt(string[] barcodes)
         {
-            return PrintEach(barcodes) + PrintTotal(barcodes);
+            return PrintEach(barcodes) + PrintDiscounts(barcodes) + PrintTotal(barcodes);
         }
         public string Purchase(string[] barcodes)
         {
-            purchases.Add(new Purchase(GetProducts(barcodes)));
+            purchases.Add(new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)));
             return PrintReceipt(barcodes);
         }
         public ArrayList PurchaseSummary()
         {
             return new SummaryBuilder(purchases).Generate();
+        }
+        public void AddDiscount(string barcode, float amount)
+        {
+            discounts.Add(new Discount() { barcode = barcode, amount = amount });
         }
 
         private Product[] GetProducts(string[] barcodes)
@@ -116,9 +131,26 @@ namespace Countdown
         {
             return products.Find(x => x.barcode == barcode);
         }
+        private Discount[] GetDiscounts(string[] barcodes)
+        {
+            return barcodes.Select(x => GetDiscount(x)).Where(x => x.amount != 0).ToArray();
+        }
+        private Discount GetDiscount(string barcode)
+        {
+            return discounts.Find(x => x.barcode == barcode);
+        }
         private string PrintEach(string[] barcodes)
         {
             return GetProducts(barcodes).Aggregate("", (str, p) => str + PrintItem(p));
+        }
+        private string PrintDiscounts(string[] barcodes)
+        {
+            return GetDiscounts(barcodes).Aggregate("", (str, d) => str + PrintDiscount(d));
+        }
+        private string PrintDiscount(Discount d)
+        {
+            Product p = GetProduct(d.barcode);
+            return String.Format("{0} -${1:n2}{2}", p.name, d.amount, Environment.NewLine);
         }
         private string PrintItem(Product p)
         {

@@ -52,5 +52,13 @@ namespace Countdown.Tests
             expected.Add(new string[] {time, "1", "5"});
             CollectionAssert.Equals(expected, store.PurchaseSummary());
         }
+
+        [TestMethod]
+        public void TestAddDiscount()
+        {
+            store.AddDiscount("0001", 1);
+            string expected = String.Format("apple $5.00{0}apple -$1.00{0}total $4.00", Environment.NewLine);
+            Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001"}));
+        }
     }
 }
