@@ -41,7 +41,33 @@ namespace Countdown
         }
         public float Cost()
         {
-            return products.Select(b => b.price).Sum();
+            return products.Select(b => b.price).Sum() - discounts.Select(d => d.amount).Sum();
+        }
+        public string PrintReceipt()
+        {
+            return PrintEach() + PrintDiscounts() + PrintTotal();
+        }
+
+        private string PrintEach()
+        {
+            return products.Aggregate("", (str, p) => str + PrintItem(p));
+        }
+        private string PrintDiscounts()
+        {
+            return discounts.Aggregate("", (str, d) => str + PrintDiscount(d));
+        }
+        private string PrintDiscount(Discount d)
+        {
+            Product p = Array.Find(products, x => x.barcode == d.barcode);
+            return String.Format("{0} -${1:n2}{2}", p.name, d.amount, Environment.NewLine);
+        }
+        private string PrintItem(Product p)
+        {
+            return String.Format("{0} ${1:n2}{2}", p.name, p.price, Environment.NewLine);
+        }
+        private string PrintTotal()
+        {
+            return String.Format("total ${0:n2}", Cost());
         }
     }
 
@@ -102,12 +128,11 @@ namespace Countdown
         }
         public float CalculateCost(string[] barcodes)
         {
-            return GetProducts(barcodes).Select(b => b.price).Sum() -
-                GetDiscounts(barcodes).Select(d => d.amount).Sum();
+            return new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)).Cost();
         }
         public string PrintReceipt(string[] barcodes)
         {
-            return PrintEach(barcodes) + PrintDiscounts(barcodes) + PrintTotal(barcodes);
+            return new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)).PrintReceipt();
         }
         public string Purchase(string[] barcodes)
         {
@@ -142,27 +167,6 @@ namespace Countdown
         private Discount GetDiscount(string barcode)
         {
             return discounts.Find(x => x.barcode == barcode);
-        }
-        private string PrintEach(string[] barcodes)
-        {
-            return GetProducts(barcodes).Aggregate("", (str, p) => str + PrintItem(p));
-        }
-        private string PrintDiscounts(string[] barcodes)
-        {
-            return GetDiscounts(barcodes).Aggregate("", (str, d) => str + PrintDiscount(d));
-        }
-        private string PrintDiscount(Discount d)
-        {
-            Product p = GetProduct(d.barcode);
-            return String.Format("{0} -${1:n2}{2}", p.name, d.amount, Environment.NewLine);
-        }
-        private string PrintItem(Product p)
-        {
-            return String.Format("{0} ${1:n2}{2}", p.name, p.price, Environment.NewLine);
-        }
-        private string PrintTotal(string[] barcodes)
-        {
-            return String.Format("total ${0:n2}", CalculateCost(barcodes));
         }
     }
 }
