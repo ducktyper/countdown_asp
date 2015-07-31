@@ -12,10 +12,12 @@ namespace Countdown
         public string name;
         public float price;
     }
+
     public class Purchase
     {
         public Product[] products {get; private set;}
         public DateTime purchased_at {get; private set;}
+
         public Purchase(Product[] _products)
         {
             products     = _products;
@@ -34,6 +36,7 @@ namespace Countdown
             return products.Select(b => b.price).Sum();
         }
     }
+
     public class SummaryBuilder
     {
         public ArrayList summary {get; private set;}
@@ -56,6 +59,7 @@ namespace Countdown
     {
         private List<Product> products;
         private List<Purchase> purchases;
+
         public Store()
         {
             products = new List<Product>();
