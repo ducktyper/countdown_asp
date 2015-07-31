@@ -15,7 +15,7 @@ namespace Countdown
 
     public struct Discount
     {
-        public string barcode;
+        public Product product;
         public float amount;
     }
 
@@ -58,7 +58,7 @@ namespace Countdown
         }
         private string PrintDiscount(Discount d)
         {
-            Product p = Array.Find(products, x => x.barcode == d.barcode);
+            Product p = d.product;
             return String.Format("{0} -${1:n2}{2}", p.name, d.amount, Environment.NewLine);
         }
         private string PrintItem(Product p)
@@ -145,7 +145,7 @@ namespace Countdown
         }
         public void AddDiscount(string barcode, float amount)
         {
-            discounts.Add(new Discount() { barcode = barcode, amount = amount });
+            discounts.Add(new Discount() { product = GetProduct(barcode), amount = amount });
         }
         public void DeleteDiscount(string barcode)
         {
@@ -162,11 +162,11 @@ namespace Countdown
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {
-            return barcodes.Select(x => GetDiscount(x)).Where(x => x.barcode != null).ToArray();
+            return barcodes.Select(x => GetDiscount(x)).Where(x => x.product.barcode != null).ToArray();
         }
         private Discount GetDiscount(string barcode)
         {
-            return discounts.Find(x => x.barcode == barcode);
+            return discounts.Find(x => x.product.barcode == barcode);
         }
     }
 }
