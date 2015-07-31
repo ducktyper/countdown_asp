@@ -41,6 +41,7 @@ namespace Countdown
     {
         private ArrayList summary;
         private List<Purchase> purchases;
+
         public SummaryBuilder(List<Purchase> _purchases)
         {
             summary = new ArrayList();
@@ -52,6 +53,7 @@ namespace Countdown
             AddPurchases();
             return summary;
         }
+
         private void AddPurchases()
         {
             purchases.ForEach(p => AddPurchase(p));
@@ -77,7 +79,7 @@ namespace Countdown
 
         public Store()
         {
-            products = new List<Product>();
+            products  = new List<Product>();
             purchases = new List<Purchase>();
         }
         public void AddItem(string barcode, string name, float price)
@@ -105,6 +107,7 @@ namespace Countdown
         {
             return new SummaryBuilder(purchases).Generate();
         }
+
         private Product[] GetProducts(string[] barcodes)
         {
             return barcodes.Select(b => GetProduct(b)).ToArray();
