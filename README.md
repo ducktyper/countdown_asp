@@ -325,7 +325,7 @@ dic["key1"] = 100;    // override value on existing key
 ```csharp
 Dictionary<string, int> dic = new Dictionary<string, int>();
 hash = {"key" => "value"}
-hash["key"] #=> "value"
+hash["key"] //=> "value" // exception to key not exist
 ```
 
 ##### UnitTesting
