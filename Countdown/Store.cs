@@ -39,7 +39,7 @@ namespace Countdown
             purchases.Add(new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)));
             return PrintReceipt(barcodes);
         }
-        public ArrayList PurchaseSummary()
+        public string[][] PurchaseSummary()
         {
             return new SummaryBuilder(purchases).Generate();
         }

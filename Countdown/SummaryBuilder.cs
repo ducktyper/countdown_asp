@@ -8,19 +8,19 @@ namespace Countdown
 {
     public class SummaryBuilder
     {
-        private ArrayList summary;
+        private List<string[]> summary;
         private List<Purchase> purchases;
 
         public SummaryBuilder(List<Purchase> _purchases)
         {
-            summary = new ArrayList();
+            summary = new List<string[]>();
             purchases = _purchases;
         }
-        public ArrayList Generate()
+        public string[][] Generate()
         {
             AddHeaders();
             AddPurchases();
-            return summary;
+            return summary.ToArray();
         }
 
         private void AddPurchases()

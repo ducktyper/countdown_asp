@@ -55,9 +55,10 @@ namespace Countdown.Tests
         public void TestPurchaseSummary()
         {
             string time = String.Format("{0:MM dd YYYY}", DateTime.Now);
-            ArrayList expected = new ArrayList();
-            expected.Add(new string[] { "Time", "Number of Products", "Cost" });
-            expected.Add(new string[] {time, "1", "5"});
+            string[,] expected = new string[,] {
+                { "Time", "Number of Products", "Cost" },
+                {time, "1", "5"}
+            };
             CollectionAssert.Equals(expected, store.PurchaseSummary());
         }
 
