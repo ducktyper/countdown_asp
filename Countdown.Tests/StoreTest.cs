@@ -24,6 +24,14 @@ namespace Countdown.Tests
         }
 
         [TestMethod]
+        public void TestAddItemOverrideDuplication()
+        {
+            store.AddItem("0001", "jazz apple", 20);
+            string expected = String.Format("jazz apple $20.00{0}total $20.00", Environment.NewLine);
+            Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001"}));
+        }
+
+        [TestMethod]
         public void TestCalculateCost()
         {
             Assert.AreEqual(15, store.CalculateCost(new string[] {"0001", "0002"}));
@@ -58,6 +66,15 @@ namespace Countdown.Tests
         {
             store.AddDiscount("0001", 1);
             string expected = String.Format("apple $5.00{0}apple -$1.00{0}total $4.00", Environment.NewLine);
+            Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001"}));
+        }
+
+        [TestMethod]
+        public void TestAddDiscountOverrideDuplication()
+        {
+            store.AddDiscount("0001", 1);
+            store.AddDiscount("0001", 2);
+            string expected = String.Format("apple $5.00{0}apple -$2.00{0}total $3.00", Environment.NewLine);
             Assert.AreEqual(expected, store.PrintReceipt(new string[] {"0001"}));
         }
 

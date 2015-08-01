@@ -8,19 +8,19 @@ namespace Countdown
 {
     public class Store
     {
-        private List<Product> products;
+        private Dictionary<string, Product> products;
         private List<Purchase> purchases;
-        private List<Discount> discounts;
+        private Dictionary<string, Discount> discounts;
 
         public Store()
         {
-            products  = new List<Product>();
+            products  = new Dictionary<string, Product>();
             purchases = new List<Purchase>();
-            discounts = new List<Discount>();
+            discounts = new Dictionary<string, Discount>();
         }
         public void AddItem(string barcode, string name, float price)
         {
-            products.Add(new Product(barcode, name,  price));
+            products[barcode] = new Product(barcode, name,  price);
         }
         public int ItemCount()
         {
@@ -45,11 +45,11 @@ namespace Countdown
         }
         public void AddDiscount(string barcode, float amount)
         {
-            discounts.Add(new Discount(GetProduct(barcode), amount));
+            discounts[barcode] = new Discount(GetProduct(barcode), amount);
         }
         public void DeleteDiscount(string barcode)
         {
-            discounts.Remove(GetDiscount(barcode));
+            discounts.Remove(barcode);
         }
 
         private Product[] GetProducts(string[] barcodes)
@@ -58,7 +58,7 @@ namespace Countdown
         }
         private Product GetProduct(string barcode)
         {
-            return products.Find(x => x.Barcode == barcode);
+            return products[barcode];
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {
@@ -66,7 +66,7 @@ namespace Countdown
         }
         private Discount GetDiscount(string barcode)
         {
-            return discounts.Find(x => x.Product.Barcode == barcode);
+            return discounts.ContainsKey(barcode) ? discounts[barcode] : null;
         }
     }
 }
