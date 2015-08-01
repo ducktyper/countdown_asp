@@ -100,6 +100,7 @@ public class Item
 ```csharp
 Item item1 = new Item();
 Item item2 = new Item("apple");
+var item2 = new Item("apple"); // var represent any type
 ```
 
 ###### instance variable (start with @)
@@ -212,7 +213,7 @@ Console.WriteLine("having {0}", name); //=> having apple
 ```
 
 ##### Array
-[More info](https://msdn.microsoft.com/en-us/library/aa288453(v=vs.71).
+[More info](https://msdn.microsoft.com/en-us/library/aa288453.aspx)
 
 Array size can't be changed after initilized.
 
@@ -220,26 +221,32 @@ Values in Array can be changed.
 
 * create array with data
 ```csharp
-string[] array = new string[]() {"apple", "orange"};
+string[] array = new string[] {"apple", "orange"};
 ```
 
 * get length
 ```csharp
-string[] array = new string[]() {"apple", "orange"};
+string[] array = new string[] {"apple", "orange"};
 array.Length; //=> 2
 ```
 
 * change data
 ```csharp
-string[] array = new string[]() {"apple", "orange"};
+string[] array = new string[] {"apple", "orange"};
 array[0] = "jazz apple";
 ```
 
 * get index
 ```csharp
-string[] array = new string[]() {"apple", "orange"};
+string[] array = new string[] {"apple", "orange"};
 Array.IndexOf(array, "apple"); // => 0
 // Array class provides many methods used in List class
+```
+
+* shorten initializer
+```csharp
+// new string[] can be skipped in this case (won't work with 'var array')
+string[] array = {"apple", "orange"};
 ```
 
 ##### List

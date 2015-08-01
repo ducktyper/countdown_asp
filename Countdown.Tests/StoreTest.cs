@@ -55,7 +55,7 @@ namespace Countdown.Tests
         public void TestPurchaseSummary()
         {
             string time = String.Format("{0:MM dd YYYY}", DateTime.Now);
-            string[,] expected = new string[,] {
+            string[,] expected = {
                 { "Time", "Number of Products", "Cost" },
                 {time, "1", "5"}
             };
