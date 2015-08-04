@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Countdown.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +9,34 @@ namespace Countdown
 {
     public class Store
     {
-        private Dictionary<string, Product> products;
         private List<Purchase> purchases;
         private Dictionary<string, Discount> discounts;
+        private StoreDB db;
 
         public Store()
         {
-            products  = new Dictionary<string, Product>();
             purchases = new List<Purchase>();
             discounts = new Dictionary<string, Discount>();
+            db        = new StoreDB();
         }
         public void AddItem(string barcode, string name, float price)
         {
-            products[barcode] = new Product(barcode, name,  price);
+            Product existing = db.Products.Where(p => p.Barcode == barcode).FirstOrDefault();
+            if (existing == null)
+            {
+                Product product = new Product() { Barcode = barcode, Name = name, Price = price };
+                db.Products.Add(product);
+            }
+            else
+            {
+                existing.Name = name;
+                existing.Price = price;
+            }
+            db.SaveChanges();
         }
         public int ItemCount()
         {
-            return products.Count();
+            return db.Products.Count();
         }
         public float CalculateCost(string[] barcodes)
         {
@@ -58,7 +70,7 @@ namespace Countdown
         }
         private Product GetProduct(string barcode)
         {
-            return products[barcode];
+            return new StoreDB().Products.Where(p => p.Barcode == barcode).FirstOrDefault();
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {

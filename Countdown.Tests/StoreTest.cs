@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
+using Countdown.Models;
 
 namespace Countdown.Tests
 {
@@ -12,6 +13,9 @@ namespace Countdown.Tests
         [TestInitialize]
         public void InitStoreHavingTwoItems()
         {
+            StoreDB db = new StoreDB();
+            db.Database.ExecuteSqlCommand("DELETE FROM Products");
+
             store = new Store();
             store.AddItem("0001", "apple", 5);
             store.AddItem("0002", "orange", 10);
