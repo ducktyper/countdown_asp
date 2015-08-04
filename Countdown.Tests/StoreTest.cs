@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
 using Countdown.Models;
+using System.Data.Entity;
 
 namespace Countdown.Tests
 {
@@ -13,6 +14,8 @@ namespace Countdown.Tests
         [TestInitialize]
         public void InitStoreHavingTwoItems()
         {
+            Database.SetInitializer(new DropCreateDatabaseAlways<StoreDB>());
+
             StoreDB db = new StoreDB();
             db.Database.ExecuteSqlCommand("DELETE FROM Products");
 
