@@ -10,13 +10,11 @@ namespace Countdown
     public class Store
     {
         private List<Purchase> purchases;
-        private Dictionary<string, Discount> discounts;
         private StoreDB db;
 
         public Store()
         {
             purchases = new List<Purchase>();
-            discounts = new Dictionary<string, Discount>();
             db        = new StoreDB();
         }
         public void AddItem(string barcode, string name, float price)
@@ -57,11 +55,25 @@ namespace Countdown
         }
         public void AddDiscount(string barcode, float amount)
         {
-            discounts[barcode] = new Discount(GetProduct(barcode), amount);
+            Product product = GetProduct(barcode);
+            Discount existing = db.Discounts.Where(p => p.Product.Id == product.Id).FirstOrDefault();
+
+            if (existing == null)
+            {
+                Discount discount = new Discount() { Product = product, Amount = amount };
+                db.Discounts.Add(discount);
+            }
+            else
+            {
+                existing.Amount = amount;
+            }
+            db.SaveChanges();
         }
         public void DeleteDiscount(string barcode)
         {
-            discounts.Remove(barcode);
+            Discount discount = db.Discounts.Where(p => p.Product.Barcode == barcode).FirstOrDefault();
+            db.Discounts.Remove(discount);
+            db.SaveChanges();
         }
 
         private Product[] GetProducts(string[] barcodes)
@@ -70,7 +82,7 @@ namespace Countdown
         }
         private Product GetProduct(string barcode)
         {
-            return new StoreDB().Products.Where(p => p.Barcode == barcode).FirstOrDefault();
+            return db.Products.Where(p => p.Barcode == barcode).FirstOrDefault();
         }
         private Discount[] GetDiscounts(string[] barcodes)
         {
@@ -78,7 +90,7 @@ namespace Countdown
         }
         private Discount GetDiscount(string barcode)
         {
-            return discounts.ContainsKey(barcode) ? discounts[barcode] : null;
+            return db.Discounts.Where(p => p.Product.Barcode == barcode).FirstOrDefault();
         }
     }
 }

@@ -7,10 +7,10 @@ namespace Countdown.Models
 {
     public class Product
     {
-        public virtual int Id { get; set; }
-        public virtual string Barcode { get; set; }
-        public virtual string Name { get; set; }
-        public virtual float Price { get; set; }
+        public int Id { get; set; }
+        public string Barcode { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
 
         public string Print()
         {

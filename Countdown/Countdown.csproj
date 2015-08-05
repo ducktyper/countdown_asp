@@ -75,7 +75,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Discount.cs" />
+    <Compile Include="Models\Discount.cs" />
     <Compile Include="Models\StoreDB.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
