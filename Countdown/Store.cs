@@ -17,14 +17,7 @@ namespace Countdown
         }
         public void AddItem(string barcode, string name, float price)
         {
-            Product existing = db.Products.Where(p => p.Barcode == barcode).FirstOrDefault();
-            if (existing == null)
-                db.Products.Add(new Product() { Barcode = barcode, Name = name, Price = price });
-            else
-            {
-                existing.Name = name;
-                existing.Price = price;
-            }
+            Product.CreateOrUpdate(db, barcode, name, price);
             db.SaveChanges();
         }
         public int ItemCount()
@@ -33,15 +26,15 @@ namespace Countdown
         }
         public float CalculateCost(string[] barcodes)
         {
-            return new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) }.Cost();
+            return BuildPurchase(barcodes).Cost();
         }
         public string PrintReceipt(string[] barcodes)
         {
-            return new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) }.PrintReceipt();
+            return BuildPurchase(barcodes).PrintReceipt();
         }
         public string Purchase(string[] barcodes)
         {
-            Purchase purchase = new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) };
+            Purchase purchase = BuildPurchase(barcodes);
             db.Purchases.Add(purchase);
             db.SaveChanges();
             return purchase.PrintReceipt();
@@ -53,11 +46,7 @@ namespace Countdown
         public void AddDiscount(string barcode, float amount)
         {
             Product product = GetProduct(barcode);
-            Discount existing = db.Discounts.Where(p => p.Product.Id == product.Id).FirstOrDefault();
-            if (existing == null)
-                db.Discounts.Add(new Discount() { Product = product, Amount = amount });
-            else
-                existing.Amount = amount;
+            Discount.CreateOrUpdate(db, product, amount);
             db.SaveChanges();
         }
         public void DeleteDiscount(string barcode)
@@ -82,6 +71,10 @@ namespace Countdown
         private Discount GetDiscount(string barcode)
         {
             return db.Discounts.Where(p => p.Product.Barcode == barcode).FirstOrDefault();
+        }
+        private Purchase BuildPurchase(string[] barcodes)
+        {
+            return new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) };
         }
     }
 }
