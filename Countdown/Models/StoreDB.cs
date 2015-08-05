@@ -10,6 +10,7 @@ namespace Countdown.Models
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             modelBuilder.Entity<Discount>().HasRequired(t => t.Product);

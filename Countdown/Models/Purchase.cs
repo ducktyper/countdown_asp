@@ -1,21 +1,19 @@
-﻿using Countdown.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Countdown
+namespace Countdown.Models
 {
     public class Purchase
     {
-        public Product[] products;
-        public Discount[] discounts;
+        public int Id { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Discount> Discounts { get; set; }
         public DateTime Purchased_at { get; private set; }
 
-        public Purchase(Product[] _products, Discount[] _discounts)
+        public Purchase()
         {
-            products     = _products;
-            discounts    = _discounts;
             Purchased_at = DateTime.Now;
         }
         public string DisplayTime()
@@ -24,11 +22,11 @@ namespace Countdown
         }
         public int ProductCount()
         {
-            return products.Count();
+            return Products.Count();
         }
         public float Cost()
         {
-            return products.Select(b => b.Price).Sum() - discounts.Select(d => d.Amount).Sum();
+            return Products.Select(b => b.Price).Sum() - Discounts.Select(d => d.Amount).Sum();
         }
         public string PrintReceipt()
         {
@@ -37,11 +35,11 @@ namespace Countdown
 
         private string PrintEach()
         {
-            return products.Aggregate("", (str, p) => str + p.Print());
+            return Products.Aggregate("", (str, p) => str + p.Print());
         }
         private string PrintDiscounts()
         {
-            return discounts.Aggregate("", (str, d) => str + d.Print());
+            return Discounts.Aggregate("", (str, d) => str + d.Print());
         }
         private string PrintTotal()
         {

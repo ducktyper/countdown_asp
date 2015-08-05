@@ -9,13 +9,11 @@ namespace Countdown
 {
     public class Store
     {
-        private List<Purchase> purchases;
         private StoreDB db;
 
         public Store()
         {
-            purchases = new List<Purchase>();
-            db        = new StoreDB();
+            db = new StoreDB();
         }
         public void AddItem(string barcode, string name, float price)
         {
@@ -35,20 +33,22 @@ namespace Countdown
         }
         public float CalculateCost(string[] barcodes)
         {
-            return new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)).Cost();
+            return new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) }.Cost();
         }
         public string PrintReceipt(string[] barcodes)
         {
-            return new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)).PrintReceipt();
+            return new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) }.PrintReceipt();
         }
         public string Purchase(string[] barcodes)
         {
-            purchases.Add(new Purchase(GetProducts(barcodes), GetDiscounts(barcodes)));
-            return PrintReceipt(barcodes);
+            Purchase purchase = new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) };
+            db.Purchases.Add(purchase);
+            db.SaveChanges();
+            return purchase.PrintReceipt();
         }
         public string[][] PurchaseSummary()
         {
-            return new SummaryBuilder(purchases).Generate();
+            return new SummaryBuilder(db.Purchases.ToList()).Generate();
         }
         public void AddDiscount(string barcode, float amount)
         {
