@@ -21,10 +21,7 @@ namespace Countdown
         {
             Product existing = db.Products.Where(p => p.Barcode == barcode).FirstOrDefault();
             if (existing == null)
-            {
-                Product product = new Product() { Barcode = barcode, Name = name, Price = price };
-                db.Products.Add(product);
-            }
+                db.Products.Add(new Product() { Barcode = barcode, Name = name, Price = price });
             else
             {
                 existing.Name = name;
@@ -57,16 +54,10 @@ namespace Countdown
         {
             Product product = GetProduct(barcode);
             Discount existing = db.Discounts.Where(p => p.Product.Id == product.Id).FirstOrDefault();
-
             if (existing == null)
-            {
-                Discount discount = new Discount() { Product = product, Amount = amount };
-                db.Discounts.Add(discount);
-            }
+                db.Discounts.Add(new Discount() { Product = product, Amount = amount });
             else
-            {
                 existing.Amount = amount;
-            }
             db.SaveChanges();
         }
         public void DeleteDiscount(string barcode)

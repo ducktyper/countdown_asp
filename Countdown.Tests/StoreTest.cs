@@ -11,14 +11,16 @@ namespace Countdown.Tests
     {
         Store store;
 
+        [AssemblyInitialize]
+        public static void AssemblyInit(TestContext context)
+        {
+            Database.SetInitializer(new DropCreateDatabaseAlways<StoreDB>());
+        }
+
         [TestInitialize]
         public void InitStoreHavingTwoItems()
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<StoreDB>());
-
-            StoreDB db = new StoreDB();
-            db.Database.ExecuteSqlCommand("DELETE FROM Products");
-
+            new StoreDB().Database.ExecuteSqlCommand("DELETE FROM Products; DELETE FROM Discounts");
             store = new Store();
             store.AddItem("0001", "apple", 5);
             store.AddItem("0002", "orange", 10);
