@@ -23,6 +23,14 @@ namespace Countdown.Models
                 existing.Price = price;
             }
         }
+        public static Product[] FindByBarcodes(StoreDB db, string[] barcodes)
+        {
+            return barcodes.Select(b => FindByBarcode(db, b)).ToArray();
+        }
+        public static Product FindByBarcode(StoreDB db, string barcode)
+        {
+            return db.Products.Where(p => p.Barcode == barcode).FirstOrDefault();
+        }
 
         public string Print()
         {

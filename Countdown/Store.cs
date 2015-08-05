@@ -45,36 +45,18 @@ namespace Countdown
         }
         public void AddDiscount(string barcode, float amount)
         {
-            Product product = GetProduct(barcode);
-            Discount.CreateOrUpdate(db, product, amount);
+            Discount.CreateOrUpdate(db, barcode, amount);
             db.SaveChanges();
         }
         public void DeleteDiscount(string barcode)
         {
-            Discount discount = db.Discounts.Where(p => p.Product.Barcode == barcode).FirstOrDefault();
-            db.Discounts.Remove(discount);
+            db.Discounts.Remove(Discount.FindByBarcode(db, barcode));
             db.SaveChanges();
         }
 
-        private Product[] GetProducts(string[] barcodes)
-        {
-            return barcodes.Select(b => GetProduct(b)).ToArray();
-        }
-        private Product GetProduct(string barcode)
-        {
-            return db.Products.Where(p => p.Barcode == barcode).FirstOrDefault();
-        }
-        private Discount[] GetDiscounts(string[] barcodes)
-        {
-            return barcodes.Select(x => GetDiscount(x)).Where(x => x != null).ToArray();
-        }
-        private Discount GetDiscount(string barcode)
-        {
-            return db.Discounts.Where(p => p.Product.Barcode == barcode).FirstOrDefault();
-        }
         private Purchase BuildPurchase(string[] barcodes)
         {
-            return new Purchase() { Products = GetProducts(barcodes), Discounts = GetDiscounts(barcodes) };
+            return Models.Purchase.Build(db, barcodes);
         }
     }
 }

@@ -12,6 +12,14 @@ namespace Countdown.Models
         public virtual ICollection<Discount> Discounts { get; set; }
         public DateTime Purchased_at { get; private set; }
 
+        public static Purchase Build(StoreDB db, string[] barcodes)
+        {
+            return new Purchase() {
+                Products = Product.FindByBarcodes(db, barcodes),
+                Discounts = Discount.FindByBarcodes(db, barcodes)
+            };
+        }
+
         public Purchase()
         {
             Purchased_at = DateTime.Now;
