@@ -14,6 +14,8 @@ namespace Countdown.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             modelBuilder.Entity<Discount>().HasRequired(t => t.Product);
+            modelBuilder.Entity<Purchase>().HasMany(t => t.Products).WithMany();
+            modelBuilder.Entity<Purchase>().HasMany(t => t.Discounts).WithMany();
         }
     }
 }

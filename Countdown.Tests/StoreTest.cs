@@ -83,6 +83,24 @@ namespace Countdown.Tests
         }
 
         [TestMethod]
+        public void TestPurchaseItemTwice()
+        {
+            store.Purchase(new string[] {"0001"});
+            store.Purchase(new string[] {"0001"});
+            Assert.AreEqual(1 + 2, store.PurchaseSummary().Length);
+        }
+
+        [TestMethod]
+        public void TestPurchaseWithSameDiscountTwice()
+        {
+            store.AddDiscount("0001", 1);
+            store.Purchase(new string[] {"0001"});
+            store.Purchase(new string[] {"0001"});
+            Assert.AreEqual("4", store.PurchaseSummary()[1][2]);
+            Assert.AreEqual("4", store.PurchaseSummary()[2][2]);
+        }
+
+        [TestMethod]
         public void TestAddDiscount()
         {
             store.AddDiscount("0001", 1);
