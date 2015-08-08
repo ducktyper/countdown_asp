@@ -77,7 +77,7 @@ namespace Countdown.Tests
         public void TestPurchaseSummary()
         {
             store.Purchase(new string[] {"0001"});
-            string time = String.Format("{0:MM dd YYYY}", DateTime.Now);
+            string time = DateTime.Now.ToString("dd MM yyyy").Replace(" ", "/");
             string expected = String.Format("[['Time','Number of Products','Cost'],['{0}','1','5']]", time);
             Assert.AreEqual(expected, AssertHelper.ToString(store.PurchaseSummary()));
         }

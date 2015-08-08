@@ -26,7 +26,7 @@ namespace Countdown.Models
         }
         public string DisplayTime()
         {
-            return String.Format("{0:MM dd YYYY}", Purchased_at);
+            return Purchased_at.ToString("dd MM yyyy").Replace(" ", "/");
         }
         public int ProductCount()
         {
