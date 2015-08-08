@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections;
+using System.Linq;
 using Countdown.Models;
 using System.Data.Entity;
 
@@ -62,25 +62,11 @@ namespace Countdown.Tests
         }
         public string ArrayToString(string[] array)
         {
-            string result = "[";
-            foreach (string value in array)
-            {
-                if (result != "[")
-                    result += ",";
-                result += "'" + value + "'";
-            }
-            return result + "]";
+            return "[" + String.Join(",", array.Select(v => "'" + v + "'")) + "]";
         }
         public string JaggedArrayToString(string[][] jaggedArray)
         {
-            string result = "[";
-            foreach (string[] array in jaggedArray)
-            {
-                if (result != "[")
-                    result += ",";
-                result += ArrayToString(array);
-            }
-            return result + "]";
+            return "[" + String.Join(",", jaggedArray.Select(a => ArrayToString(a))) + "]";
         }
 
         [TestMethod]
