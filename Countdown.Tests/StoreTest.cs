@@ -6,6 +6,18 @@ using System.Data.Entity;
 
 namespace Countdown.Tests
 {
+    public class AssertHelper
+    {
+        public static string ToString(string[] array)
+        {
+            return "[" + String.Join(",", array.Select(v => "'" + v + "'")) + "]";
+        }
+        public static string ToString(string[][] jaggedArray)
+        {
+            return "[" + String.Join(",", jaggedArray.Select(a => ToString(a))) + "]";
+        }
+    }
+    
     [TestClass]
     public class StoreTest
     {
@@ -60,14 +72,6 @@ namespace Countdown.Tests
             string expected = String.Format("apple $5.00{0}orange $10.00{0}total $15.00", Environment.NewLine);
             Assert.AreEqual(expected, store.Purchase(new string[] {"0001", "0002"}));
         }
-        public string ArrayToString(string[] array)
-        {
-            return "[" + String.Join(",", array.Select(v => "'" + v + "'")) + "]";
-        }
-        public string JaggedArrayToString(string[][] jaggedArray)
-        {
-            return "[" + String.Join(",", jaggedArray.Select(a => ArrayToString(a))) + "]";
-        }
 
         [TestMethod]
         public void TestPurchaseSummary()
@@ -75,7 +79,7 @@ namespace Countdown.Tests
             store.Purchase(new string[] {"0001"});
             string time = String.Format("{0:MM dd YYYY}", DateTime.Now);
             string expected = String.Format("[['Time','Number of Products','Cost'],['{0}','1','5']]", time);
-            Assert.AreEqual(expected, JaggedArrayToString(store.PurchaseSummary()));
+            Assert.AreEqual(expected, AssertHelper.ToString(store.PurchaseSummary()));
         }
 
         [TestMethod]
